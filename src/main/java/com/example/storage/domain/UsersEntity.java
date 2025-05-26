@@ -1,10 +1,7 @@
 package com.example.storage.domain;
 
 import com.example.storage.enums.Roles;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -33,6 +30,7 @@ public class UsersEntity {
 	@Column(name = "user_info", columnDefinition = "VARCHAR(255)")
 	private String info;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "user_role", columnDefinition = "CHAR(5)", nullable = false)
 	private Roles role;
 }

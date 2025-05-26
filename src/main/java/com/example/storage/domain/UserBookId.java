@@ -5,14 +5,14 @@ import java.util.Objects;
 
 public class UserBookId implements Serializable {
 
-    private String userId;
-    private Integer bookId;
+    private String user;
+    private Integer book;
 
     public UserBookId() { }
 
     public UserBookId(String userId, Integer bookId) {
-        this.userId = userId;
-        this.bookId = bookId;
+        this.user = userId;
+        this.book = bookId;
     }
 
     @Override
@@ -20,12 +20,12 @@ public class UserBookId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof UserBookId)) return false;
         UserBookId that = (UserBookId) o;
-        return Objects.equals(userId, that.userId) &&
-                Objects.equals(bookId, that.bookId);
+        return Objects.equals(user, that.user) &&
+                Objects.equals(book, that.book);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, bookId);
+        return Objects.hash(user, book);
     }
 }

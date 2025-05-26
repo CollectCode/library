@@ -34,6 +34,9 @@ public class BookEntity {
 	@Column(name = "book_publish_date", columnDefinition = "date")
 	private LocalDate publishDate;
 
+	@Column(name = "book_img", columnDefinition = "VARCHAR(255)")
+	private String bookImg;
+
 	@Column(name = "book_price", columnDefinition = "int")
 	private BigInteger price;
 }

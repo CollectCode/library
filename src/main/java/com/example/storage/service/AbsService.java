@@ -5,6 +5,7 @@ import com.example.storage.repository.AbsRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.List;
 
 public abstract class AbsService<
@@ -12,7 +13,7 @@ public abstract class AbsService<
         REQ,
         RES,
         ENTITY,
-        ID,
+        ID extends Serializable,
         CVT extends ConverterImpl<ENTITY, REQ, RES>>
         implements ServiceImpl<REQ, RES>  {
 
@@ -59,8 +60,7 @@ public abstract class AbsService<
         if(request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
-        ENTITY entity = converter.toEntity(request);
-        List<ENTITY> entities = repository.findAll(entity);
+        List<ENTITY> entities = repository.findAll();
         return converter.toDtoList(entities);
     }
 }

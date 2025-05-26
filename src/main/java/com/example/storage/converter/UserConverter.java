@@ -6,12 +6,15 @@ import com.example.storage.dto.UserCRUDResponse;
 import com.example.storage.dto.UserDto;
 import com.example.storage.enums.Roles;
 import jakarta.persistence.Converter;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@Converter
+@Slf4j
+@Component
 public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest, UserCRUDResponse> {
 
     @Override
@@ -22,8 +25,9 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
                 .phone(dto.getPhone())
                 .dept(dto.getDept())
                 .name(dto.getName())
+                .info(dto.getInfo())
                 .password(dto.getPassword())
-                .role(Roles.USER)
+                .role(dto.getRole())
                 .build();
     }
 
