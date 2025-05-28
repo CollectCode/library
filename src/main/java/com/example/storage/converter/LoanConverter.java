@@ -3,6 +3,7 @@ package com.example.storage.converter;
 import com.example.storage.domain.LoanEntity;
 import com.example.storage.dto.LoanCRUDRequest;
 import com.example.storage.dto.LoanCRUDResponse;
+import com.example.storage.dto.LoanDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,16 +13,37 @@ public class LoanConverter implements ConverterImpl<LoanEntity, LoanCRUDRequest,
 
     @Override
     public LoanEntity toEntity(LoanCRUDRequest request) {
-        return null;
+        LoanDto dto = request.getLoan();
+        return LoanEntity.builder()
+                .loanDate(dto.getLoanDate())
+                .bookId(dto.getBookId())
+                .returnedDate(dto.getReturnDate())
+                .returnExpireDate(dto.getReturnDate().plusDays(15))
+                .userId(dto.getUserId())
+                .whetherReturn(dto.getStatus())
+                .build();
     }
 
     @Override
     public LoanCRUDResponse toDto (LoanEntity entity) {
-        return null;
+        LoanDto dto = LoanDto.builder()
+                .loanDate(entity.getLoanDate())
+                .loanId(entity.getId())
+                .userId(entity.getUserId())
+                .bookId(entity.getBookId())
+                .status(entity.getWhetherReturn())
+                .returnDate(entity.getReturnedDate())
+                .returnExpireDate(entity.getReturnExpireDate())
+                .build();
+        return LoanCRUDResponse.builder()
+                .loan(dto)
+                .build();
     }
 
     @Override
     public List<LoanCRUDResponse> toDtoList(List<LoanEntity> entities) {
-        return List.of();
+        return entities.stream()
+                .map(this::toDto)
+                .toList();
     }
 }

@@ -18,5 +18,6 @@ public class LoanDto {
     private Long bookId;
     private LocalDate loanDate;
     private LocalDate returnDate;
+    private LocalDate returnExpireDate;
     private Return status;
 }

@@ -30,7 +30,7 @@ public class BookController extends AbsController<
     }
 
     // 책 제목으로 조회
-    @GetMapping("/search/{bookTitle}")
+    @GetMapping("/title/{bookTitle}")
     public ResponseEntity<List<BookCRUDResponse>> getListByTitle(
             @PathVariable String bookTitle
     )    {
@@ -39,7 +39,7 @@ public class BookController extends AbsController<
     }
 
     // 책 저자로 조회
-    @GetMapping("/search/{author}")
+    @GetMapping("/author/{author}")
     public ResponseEntity<List<BookCRUDResponse>> getListByAuthor(
             @PathVariable String author
     )    {
@@ -48,7 +48,7 @@ public class BookController extends AbsController<
     }
 
     // 책 출판사로 조회
-    @GetMapping("/search/{publish}")
+    @GetMapping("/publish/{publish}")
     public ResponseEntity<List<BookCRUDResponse>> getListByPublish(
             @PathVariable String publish
     )    {

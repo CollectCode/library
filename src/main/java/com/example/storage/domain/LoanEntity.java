@@ -35,4 +35,11 @@ public class LoanEntity {
 
     @Column(name = "whether_return", columnDefinition = "CHAR(10)", nullable = false)
     private Return whetherReturn;
+
+    public void updateReturnType(Return returnType)  {
+        if(returnType == null)  {
+            throw new IllegalArgumentException("Return type can not be null");
+        }
+        this.whetherReturn = returnType;
+    }
 }
