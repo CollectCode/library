@@ -15,7 +15,7 @@ public class UsersService extends AbsService<
         UserCRUDRequest,
         UserCRUDResponse,
         UsersEntity,
-        String,
+        Long,
         UserConverter>{
 
     public UsersService(UsersRepository repository, UserConverter converter) {

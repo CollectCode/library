@@ -1,7 +1,6 @@
 package com.example.storage.service;
 
 import com.example.storage.converter.ConverterImpl;
-import com.example.storage.repository.AbsRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public abstract class AbsService<
-        REP extends AbsRepository<ENTITY, ID>,
+        REP extends JpaRepository<ENTITY, ID>,
         REQ,
         RES,
         ENTITY,

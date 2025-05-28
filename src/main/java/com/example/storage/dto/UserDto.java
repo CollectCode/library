@@ -7,12 +7,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserDto {
-    private String id;
+    private Long id;
     private String name;
     private String phone;
     private String dept;

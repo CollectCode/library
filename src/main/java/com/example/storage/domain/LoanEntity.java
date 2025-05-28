@@ -1,5 +1,6 @@
 package com.example.storage.domain;
 
+import com.example.storage.enums.Return;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,25 +12,27 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "loan")
-@IdClass(UserBookId.class)
 public class LoanEntity {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UsersEntity user;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private BookEntity book;
+    @Column(name = "user_id", columnDefinition = "INT", nullable = false)
+    private Long userId;
+
+    @Column(name = "book_id", columnDefinition = "INT", nullable = false)
+    private Long bookId;
 
     @Column(name = "loan_date", columnDefinition = "DATE", nullable = false)
     private LocalDate loanDate;
 
-    @Column(name = "return_date", columnDefinition = "DATE", nullable = false)
-    private LocalDate returnDate;
+    @Column(name = "return_expire_date", columnDefinition = "DATE", nullable = false)
+    private LocalDate returnExpireDate;
+
+    @Column(name = "returned_date", columnDefinition = "DATE", nullable = false)
+    private LocalDate returnedDate;
 
     @Column(name = "whether_return", columnDefinition = "CHAR(10)", nullable = false)
-    private String whetherReturn;
+    private Return whetherReturn;
 }

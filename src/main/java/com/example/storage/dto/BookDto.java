@@ -10,8 +10,6 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class BookDto {
     private Long id;
     private String title;

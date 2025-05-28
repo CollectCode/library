@@ -13,7 +13,8 @@ import lombok.*;
 public class UsersEntity {
 	
 	@Id
-	private String userId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@Column(name = "user_pw", columnDefinition = "VARCHAR(30)", nullable = false)
 	private String password;
