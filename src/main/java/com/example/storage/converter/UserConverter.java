@@ -21,7 +21,6 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
     public UsersEntity toEntity(UserCRUDRequest request) {
         UserDto dto = request.getUser();
         return UsersEntity.builder()
-                .userId(dto.getId())
                 .phone(dto.getPhone())
                 .dept(dto.getDept())
                 .name(dto.getName())
@@ -34,7 +33,7 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
     @Override
     public UserCRUDResponse toDto(UsersEntity entity) {
         UserDto dto = UserDto.builder()
-                .id(entity.getUserId())
+                .id(entity.getId())
                 .info(entity.getInfo())
                 .role(entity.getRole())
                 .dept(entity.getDept())
