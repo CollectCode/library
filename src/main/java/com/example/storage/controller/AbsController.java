@@ -50,7 +50,7 @@ public abstract class AbsController<
     }
 
     @Override
-    @GetMapping("")
+    @GetMapping("/read")
     public ResponseEntity<List<RES>> read(@RequestBody REQ request)   {
         List<RES> response = service.read(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
