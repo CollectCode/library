@@ -31,6 +31,7 @@ public abstract class AbsController<
     @Override
     @PostMapping("/add")
     public ResponseEntity<RES> save(@RequestBody REQ request)   {
+        log.info("save request: {}", request);
         RES response = service.save(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

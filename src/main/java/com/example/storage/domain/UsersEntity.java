@@ -14,14 +14,14 @@ public class UsersEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+	private Long userId;
+
+	@Column(name = "user_name", columnDefinition = "CHAR(20)", nullable = false)
+	private String username;
+
 	@Column(name = "user_pw", columnDefinition = "VARCHAR(30)", nullable = false)
 	private String password;
-	
-	@Column(name = "user_name", columnDefinition = "CHAR(20)", nullable = false)
-	private String name;
-	
+
 	@Column(name = "user_phone", columnDefinition = "CHAR(13)")
 	private String phone;
 	

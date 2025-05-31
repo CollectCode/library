@@ -16,7 +16,7 @@ public class LoanEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long LoanId;
 
     @Column(name = "user_id", columnDefinition = "INT", nullable = false)
     private Long userId;

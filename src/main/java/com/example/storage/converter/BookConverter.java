@@ -4,7 +4,6 @@ import com.example.storage.domain.BookEntity;
 import com.example.storage.dto.BookCRUDRequest;
 import com.example.storage.dto.BookCRUDResponse;
 import com.example.storage.dto.BookDto;
-import com.example.storage.dto.BookListRead;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class BookConverter implements ConverterImpl<BookEntity, BookCRUDRequest,
     @Override
     public BookCRUDResponse toDto(BookEntity entity) {
         BookDto dto = BookDto.builder()
-                .id(entity.getId())
+                .id(entity.getBookId())
                 .bookImg(entity.getBookImg())
                 .author(entity.getAuthor())
                 .title(entity.getTitle())

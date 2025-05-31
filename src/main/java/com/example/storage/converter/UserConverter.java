@@ -4,12 +4,9 @@ import com.example.storage.domain.UsersEntity;
 import com.example.storage.dto.UserCRUDRequest;
 import com.example.storage.dto.UserCRUDResponse;
 import com.example.storage.dto.UserDto;
-import com.example.storage.enums.Roles;
-import jakarta.persistence.Converter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
         return UsersEntity.builder()
                 .phone(dto.getPhone())
                 .dept(dto.getDept())
-                .name(dto.getName())
+                .username(dto.getUsername())
                 .info(dto.getInfo())
                 .password(dto.getPassword())
                 .role(dto.getRole())
@@ -33,11 +30,11 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
     @Override
     public UserCRUDResponse toDto(UsersEntity entity) {
         UserDto dto = UserDto.builder()
-                .id(entity.getId())
+                .id(entity.getUserId())
                 .info(entity.getInfo())
                 .role(entity.getRole())
                 .dept(entity.getDept())
-                .name(entity.getName())
+                .username(entity.getUsername())
                 .phone(entity.getPhone())
                 .build();
         return UserCRUDResponse.builder()

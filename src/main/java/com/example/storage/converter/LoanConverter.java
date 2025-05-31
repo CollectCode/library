@@ -28,7 +28,7 @@ public class LoanConverter implements ConverterImpl<LoanEntity, LoanCRUDRequest,
     public LoanCRUDResponse toDto (LoanEntity entity) {
         LoanDto dto = LoanDto.builder()
                 .loanDate(entity.getLoanDate())
-                .loanId(entity.getId())
+                .loanId(entity.getLoanId())
                 .userId(entity.getUserId())
                 .bookId(entity.getBookId())
                 .status(entity.getWhetherReturn())

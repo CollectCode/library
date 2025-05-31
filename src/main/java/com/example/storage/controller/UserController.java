@@ -6,6 +6,7 @@ import com.example.storage.dto.UserCRUDRequest;
 import com.example.storage.dto.UserCRUDResponse;
 import com.example.storage.repository.UsersRepository;
 import com.example.storage.service.UsersService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

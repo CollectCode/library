@@ -4,7 +4,6 @@ import com.example.storage.converter.BookConverter;
 import com.example.storage.domain.BookEntity;
 import com.example.storage.dto.BookCRUDRequest;
 import com.example.storage.dto.BookCRUDResponse;
-import com.example.storage.dto.BookListRead;
 import com.example.storage.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
