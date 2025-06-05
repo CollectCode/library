@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/user/add", "/api/book/title/**", "/api/book/author/**", "/api/book/publish/**").permitAll()
+                        .requestMatchers("/api/book/**", "/api/user/**", "/api/loan/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement((sessionManagement) -> sessionManagement
@@ -47,28 +48,26 @@ public class SecurityConfig {
         return http.build();
     }
 
-    //
-	@Bean
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // H2 Console 접근 허용
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/api/**").permitAll()
-                .anyRequest().permitAll()
-            )
-            // CSRF 설정 (h2-console은 예외)
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/h2-console/**")
-                .ignoringRequestMatchers("/api/user/**")
-            )
-            // Frame-Options 설정 (iframe 허용)
-            .headers(headers -> headers
-                .frameOptions(frame -> frame.sameOrigin())
-            );
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**", "/login", "/api/**").permitAll()
+                        .anyRequest().permitAll()
+                )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**", "/api/user/**")
+                )
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin())
+                )
+                // 여기서 커스텀 로그인 필터 추가
+                .addFilterAt(customUsernamePasswordAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))),
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();

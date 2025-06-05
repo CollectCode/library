@@ -1,7 +1,10 @@
 package com.example.storage.repository;
 
 import com.example.storage.domain.LoanEntity;
+import com.example.storage.enums.Return;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,4 +13,7 @@ import java.util.List;
 public interface LoanRepository extends JpaRepository<LoanEntity, Long> {
     List<LoanEntity> findAllByBookId(Long bookId);
     List<LoanEntity> findAllByUserId(Long userId);
+
+    LoanEntity findByBookIdAndWhetherReturn(Long bookId, Return whetherReturn);
+    boolean existsByBookIdAndWhetherReturn(Long bookId, Return whetherReturn);
 }

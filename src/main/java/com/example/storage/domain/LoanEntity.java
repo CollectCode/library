@@ -30,10 +30,11 @@ public class LoanEntity {
     @Column(name = "return_expire_date", columnDefinition = "DATE", nullable = false)
     private LocalDate returnExpireDate;
 
-    @Column(name = "returned_date", columnDefinition = "DATE", nullable = false)
+    @Column(name = "returned_date", columnDefinition = "DATE")
     private LocalDate returnedDate;
 
-    @Column(name = "whether_return", columnDefinition = "CHAR(10)", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "whether_return", nullable = false)
     private Return whetherReturn;
 
     public void updateReturnType(Return returnType)  {
@@ -41,5 +42,17 @@ public class LoanEntity {
             throw new IllegalArgumentException("Return type can not be null");
         }
         this.whetherReturn = returnType;
+    }
+
+    public void updateReturnDate(LocalDate returnDate)  {
+        if(returnDate == null)  {
+            throw new IllegalArgumentException("Return date can not be null");
+        }
+        this.returnedDate = returnDate;
+    }
+
+    public void returnBook(Return returnType, LocalDate returnDate)    {
+        updateReturnType(returnType);
+        updateReturnDate(returnDate);
     }
 }

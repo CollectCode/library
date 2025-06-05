@@ -1,5 +1,7 @@
 package com.example.storage.domain;
 
+import com.example.storage.dto.UserCRUDRequest;
+import com.example.storage.dto.UserDto;
 import com.example.storage.enums.Roles;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,4 +36,15 @@ public class UsersEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "user_role", columnDefinition = "CHAR(5)", nullable = false)
 	private Roles role;
+
+	public UsersEntity update(UserCRUDRequest request) {
+		UserDto dto = request.getUser();
+		this.username = dto.getUsername();
+		this.password = dto.getPassword();
+		this.phone = dto.getPhone();
+		this.dept = dto.getDept();
+		this.info = dto.getInfo();
+		this.role = dto.getRole();
+		return this;
+	}
 }

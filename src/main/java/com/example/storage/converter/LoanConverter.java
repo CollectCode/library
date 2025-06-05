@@ -4,6 +4,7 @@ import com.example.storage.domain.LoanEntity;
 import com.example.storage.dto.LoanCRUDRequest;
 import com.example.storage.dto.LoanCRUDResponse;
 import com.example.storage.dto.LoanDto;
+import com.example.storage.enums.Return;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,23 +19,35 @@ public class LoanConverter implements ConverterImpl<LoanEntity, LoanCRUDRequest,
                 .loanDate(dto.getLoanDate())
                 .bookId(dto.getBookId())
                 .returnedDate(dto.getReturnDate())
-                .returnExpireDate(dto.getReturnDate().plusDays(15))
+                .returnExpireDate(dto.getLoanDate().plusDays(15))
                 .userId(dto.getUserId())
-                .whetherReturn(dto.getStatus())
+                .whetherReturn(Return.LOANING)
                 .build();
     }
 
     @Override
     public LoanCRUDResponse toDto (LoanEntity entity) {
-        LoanDto dto = LoanDto.builder()
-                .loanDate(entity.getLoanDate())
-                .loanId(entity.getLoanId())
-                .userId(entity.getUserId())
-                .bookId(entity.getBookId())
-                .status(entity.getWhetherReturn())
-                .returnDate(entity.getReturnedDate())
-                .returnExpireDate(entity.getReturnExpireDate())
-                .build();
+        LoanDto dto;
+        if(entity.getReturnedDate() == null) {
+            dto = LoanDto.builder()
+                    .loanDate(entity.getLoanDate())
+                    .loanId(entity.getLoanId())
+                    .userId(entity.getUserId())
+                    .bookId(entity.getBookId())
+                    .returnExpireDate(entity.getReturnExpireDate())
+                    .status(entity.getWhetherReturn())
+                    .build();
+        } else {
+            dto = LoanDto.builder()
+                    .loanDate(entity.getLoanDate())
+                    .loanId(entity.getLoanId())
+                    .userId(entity.getUserId())
+                    .bookId(entity.getBookId())
+                    .returnDate(entity.getReturnedDate())
+                    .returnExpireDate(entity.getReturnExpireDate())
+                    .status(entity.getWhetherReturn())
+                    .build();
+        }
         return LoanCRUDResponse.builder()
                 .loan(dto)
                 .build();

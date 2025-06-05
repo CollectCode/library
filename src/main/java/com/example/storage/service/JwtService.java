@@ -132,7 +132,6 @@ public class JwtService {
     public Map<String, ResponseCookie> login(UsersEntity user)  {
 
         Map<String, String> tokens = getTokenByUsername(user);
-
         Map<String, ResponseCookie> responseCookies = new HashMap<>();
 
         // 쿠키에 각 토큰을 저장

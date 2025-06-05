@@ -1,5 +1,7 @@
 package com.example.storage.domain;
 
+import com.example.storage.dto.BookCRUDRequest;
+import com.example.storage.dto.BookDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -39,4 +41,15 @@ public class BookEntity {
 
 	@Column(name = "book_price", columnDefinition = "int")
 	private BigInteger price;
+
+	public BookEntity update(BookCRUDRequest request) {
+		BookDto dto = request.getBook();
+		this.title = dto.getTitle();
+		this.author = dto.getAuthor();
+		this.publish = dto.getPublish();
+		this.publishDate = dto.getPublishDate();
+		this.bookImg = dto.getBookImg();
+		this.price = dto.getPrice();
+		return this;
+	}
 }

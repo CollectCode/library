@@ -21,4 +21,31 @@ public class UsersService extends AbsService<
     public UsersService(UsersRepository repository, UserConverter converter) {
         super(repository, converter);
     }
+
+    @Override
+    public UserCRUDResponse update(UserCRUDRequest request) {
+        if(request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
+        UsersEntity entity = repository.findByUsername(request.getUser().getUsername()).orElse(null);
+        if(entity == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        entity.update(request);
+        UsersEntity updatedEntity = repository.save(entity);
+        return converter.toDto(updatedEntity);
+    }
+
+    @Override
+    public UserCRUDResponse delete(UserCRUDRequest request) {
+        if(request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
+        UsersEntity entity = repository.findByUsername(request.getUser().getUsername()).orElse(null);
+        if(entity == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        repository.delete(entity);
+        return converter.toDto(entity);
+    }
 }

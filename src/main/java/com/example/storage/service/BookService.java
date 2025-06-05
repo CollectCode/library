@@ -22,6 +22,20 @@ public class BookService extends AbsService<
         super(repository, converter);
     }
 
+    @Override
+    public BookCRUDResponse update(BookCRUDRequest request)    {
+        if(request == null) {
+            throw new IllegalArgumentException("request cannot be null");
+        }
+        BookEntity book = repository.findById(request.getBook().getId()).orElse(null);
+        if(book == null) {
+            throw new IllegalArgumentException("book cannot be null");
+        }
+        book.update(request);
+        BookEntity updatedBooks = repository.save(book);
+        return converter.toDto(updatedBooks);
+    }
+
     public List<BookCRUDResponse> getListByTitle(String title) {
         List<BookEntity> books = repository.findAllByTitle(title);
         return converter.toDtoList(books);
