@@ -46,7 +46,8 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        log.info("Called CustomUsernamePasswordAuthenticationFilter");
+        log.info("Called attemptAuthentication in CustomUsernamePasswordAuthenticationFilter");
+
         // POST 메서드 확인
         if (!request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
@@ -79,11 +80,15 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+        log.info("Called successfulAuthentication in CustomUsernamePasswordAuthenticationFilter");
+
         // 인증 객체에서 username 추출
         String username = authResult.getName();
         
         // 사용자 정보 추출
         UsersEntity user = usersRepository.findByUsername(username).orElseThrow(() -> new AuthenticationServiceException("User not found"));
+
+        log.info("get user in successfulAuthentication : {}", user);
 
         // 사용자 정보 기반으로 토큰제작 및 쿠키에 담기
         Map<String, ResponseCookie> cookies = jwtService.login(user);

@@ -9,6 +9,7 @@ import lombok.*;
 @Data
 @Entity
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
@@ -18,16 +19,16 @@ public class UsersEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 
-	@Column(name = "user_name", columnDefinition = "CHAR(20)", nullable = false)
+	@Column(name = "user_name", columnDefinition = "VARCHAR(20)", nullable = false)
 	private String username;
 
 	@Column(name = "user_pw", columnDefinition = "VARCHAR(255)", nullable = false)
 	private String password;
 
-	@Column(name = "user_phone", columnDefinition = "CHAR(13)")
+	@Column(name = "user_phone", columnDefinition = "VARCHAR(13)")
 	private String phone;
 	
-	@Column(name = "user_dept", columnDefinition = "CHAR(20)")
+	@Column(name = "user_dept", columnDefinition = "VARCHAR(20)")
 	private String dept;
 
 	@Column(name = "user_info", columnDefinition = "VARCHAR(255)")

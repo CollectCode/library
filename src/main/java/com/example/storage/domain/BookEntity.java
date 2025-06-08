@@ -24,13 +24,13 @@ public class BookEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookId;
 	
-	@Column(name = "book_title", columnDefinition = "CHAR(100)", nullable = false)
+	@Column(name = "book_title", columnDefinition = "VARCHAR(100)", nullable = false)
 	private String title;
 	
-	@Column(name = "book_author", columnDefinition = "CHAR(50)", nullable = false)
+	@Column(name = "book_author", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String author;
 	
-	@Column(name = "book_publish", columnDefinition = "CHAR(50)")
+	@Column(name = "book_publish", columnDefinition = "VARCHAR(50)")
 	private String publish;
 	
 	@Column(name = "book_publish_date", columnDefinition = "date")

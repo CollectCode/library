@@ -5,6 +5,7 @@ import com.example.storage.domain.BookEntity;
 import com.example.storage.dto.*;
 import com.example.storage.repository.BookRepository;
 import com.example.storage.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,24 @@ public class BookController extends AbsController<
 
     public BookController(BookService service) {
         super(service);
+    }
+    
+    // 모든 책 조회
+    @GetMapping("/all/{page}")
+    public ResponseEntity<Page<BookCRUDResponse>> getAll(
+            @PathVariable int page
+    )  {
+        Page<BookCRUDResponse> responses = service.findAll(page, 10);
+        return new ResponseEntity<>(responses, HttpStatus.OK);
+    }
+    
+    // 책 ID로 조회
+    @GetMapping("/{bookId}")
+    public ResponseEntity<BookCRUDResponse> getById(
+            @PathVariable("bookId") Long bookId
+    )  {
+        BookCRUDResponse response = service.findById(bookId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 책 제목으로 조회

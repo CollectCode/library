@@ -6,6 +6,7 @@ import com.example.storage.dto.UserCRUDResponse;
 import com.example.storage.dto.UserDto;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
 
     @Override
     public UserCRUDResponse toDto(UsersEntity entity) {
+        log.info("Get user in converter : {}", entity);
         UserDto dto = UserDto.builder()
                 .id(entity.getUserId())
                 .info(entity.getInfo())
@@ -50,5 +52,9 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
         return entities.stream()
                 .map(this::toDto)
                 .toList();
+    }
+
+    public Page<UserCRUDResponse> toDtoList(Page<UsersEntity> entities) {
+        return entities.map(this::toDto);
     }
 }

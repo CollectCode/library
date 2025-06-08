@@ -8,8 +8,13 @@ import com.example.storage.dto.UserDto;
 import com.example.storage.repository.UsersRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class UsersService extends AbsService<
         UsersRepository,
@@ -32,6 +38,17 @@ public class UsersService extends AbsService<
     public UsersService(UsersRepository repository, UserConverter converter, JwtService jwtService) {
         super(repository, converter);
         this.jwtService = jwtService;
+    }
+
+    public Page<UserCRUDResponse> findAll(int page, UserDetails user) {
+        log.info("asd : {}", user.getAuthorities().stream().toList());
+        if(!user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))   {
+           throw new IllegalArgumentException("You do not have permission to access this resource");
+        }
+
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<UsersEntity> users = repository.findAll(pageable);
+        return converter.toDtoList(users);
     }
 
     @Override
@@ -67,6 +84,8 @@ public class UsersService extends AbsService<
         }
 
         UsersEntity entity = repository.findByUsername(user.getUsername()).orElse(null);
+
+        log.info("get UserEntity : {}", entity);
 
         if(entity == null) {
             throw new UsernameNotFoundException("User not found");

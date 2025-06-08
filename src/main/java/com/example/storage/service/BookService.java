@@ -5,6 +5,9 @@ import com.example.storage.domain.BookEntity;
 import com.example.storage.dto.BookCRUDRequest;
 import com.example.storage.dto.BookCRUDResponse;
 import com.example.storage.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +37,19 @@ public class BookService extends AbsService<
         book.update(request);
         BookEntity updatedBooks = repository.save(book);
         return converter.toDto(updatedBooks);
+    }
+
+    public Page<BookCRUDResponse> findAll(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BookEntity> books = repository.findAll(pageable);
+        return converter.toDtoList(books);
+    }
+
+    public BookCRUDResponse findById(Long id) {
+        BookEntity book = repository.findById(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("book cannot be null");
+        });
+        return converter.toDto(book);
     }
 
     public List<BookCRUDResponse> getListByTitle(String title) {

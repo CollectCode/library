@@ -23,13 +23,15 @@ public class LocalUserDetailService implements UserDetailsService {
 
     private final UsersRepository usersRepository;
 
-    @Transactional
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
         // 유저 찾기
         UsersEntity user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        log.info("user : {}", user);
 
         // 권한 부여할 리스트 생성
         List<GrantedAuthority> auths = new ArrayList<>();

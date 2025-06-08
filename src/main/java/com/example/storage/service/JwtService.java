@@ -94,6 +94,8 @@ public class JwtService {
     // username으로 Token 생성 및 저장
     @Transactional
     public Map<String, String> getTokenByUsername(UsersEntity user) {
+        log.info("getTokenByUsername in user : {}", user);
+
         Map<String, String> tokens = new HashMap<>();
 
         String accessToken = generateToken(user.getUsername(), ACCESS_TOKEN);

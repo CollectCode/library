@@ -9,6 +9,7 @@ import com.example.storage.service.UsersService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +32,15 @@ public class UserController extends AbsController<
         super(service);
     }
 
+    @GetMapping("/{page}")
+    public ResponseEntity<Page<UserCRUDResponse>> getAllUsers(
+            @AuthenticationPrincipal UserDetails user,
+            @PathVariable int page
+    ) {
+        Page<UserCRUDResponse> responses = service.findAll(page, user);
+        return new ResponseEntity<>(responses, HttpStatus.OK);
+    }
+
     @GetMapping("/auth/me")
     public ResponseEntity<UserCRUDResponse> getUser(
             @AuthenticationPrincipal UserDetails userDetails
@@ -40,6 +50,7 @@ public class UserController extends AbsController<
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
         UserCRUDResponse response = service.getUserByUsername(userDetails);
         return ResponseEntity.ok(response);
     }

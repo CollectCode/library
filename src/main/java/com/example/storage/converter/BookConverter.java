@@ -4,6 +4,7 @@ import com.example.storage.domain.BookEntity;
 import com.example.storage.dto.BookCRUDRequest;
 import com.example.storage.dto.BookCRUDResponse;
 import com.example.storage.dto.BookDto;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,5 +47,9 @@ public class BookConverter implements ConverterImpl<BookEntity, BookCRUDRequest,
                 .stream()
                 .map(this::toDto)
                 .toList();
+    }
+
+    public Page<BookCRUDResponse> toDtoList(Page<BookEntity> entities) {
+        return entities.map(this::toDto);
     }
 }
