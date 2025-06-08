@@ -21,7 +21,7 @@ public class UsersEntity {
 	@Column(name = "user_name", columnDefinition = "CHAR(20)", nullable = false)
 	private String username;
 
-	@Column(name = "user_pw", columnDefinition = "VARCHAR(30)", nullable = false)
+	@Column(name = "user_pw", columnDefinition = "VARCHAR(255)", nullable = false)
 	private String password;
 
 	@Column(name = "user_phone", columnDefinition = "CHAR(13)")

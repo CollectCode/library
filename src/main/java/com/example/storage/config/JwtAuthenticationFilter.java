@@ -29,24 +29,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("Called JWT Authentication Filter");
         String requestUri = request.getRequestURI();
 
         // api <-- 데이터를 주고 받는 api요청이 아닌경우
-        if(!requestUri.equals("/api"))  {
+        if(requestUri.startsWith("/api/login"))  {
+            log.info("Request URI: {}", requestUri);
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = getToken(request);
 
+        log.info("Request URI: {}", requestUri);
+        log.info("Token : {}", token);
+
         try {
             if(token != null)   {
                 Authentication authentication = jwtService.verifyToken(token);
+                log.info("authentication.getPrincipal() : {}", authentication.getPrincipal());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch(ExpiredJwtException | SignatureException | IllegalArgumentException | UsernameNotFoundException e){
             log.error("Error : {}", response, e);
         }
+
+        filterChain.doFilter(request, response);
     }
 
     public String getToken(HttpServletRequest request) {

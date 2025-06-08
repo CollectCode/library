@@ -6,8 +6,17 @@ import com.example.storage.dto.UserCRUDRequest;
 import com.example.storage.dto.UserCRUDResponse;
 import com.example.storage.dto.UserDto;
 import com.example.storage.repository.UsersRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UsersService extends AbsService<
@@ -18,8 +27,11 @@ public class UsersService extends AbsService<
         Long,
         UserConverter>{
 
-    public UsersService(UsersRepository repository, UserConverter converter) {
+    private final JwtService jwtService;
+
+    public UsersService(UsersRepository repository, UserConverter converter, JwtService jwtService) {
         super(repository, converter);
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -46,6 +58,40 @@ public class UsersService extends AbsService<
             throw new IllegalArgumentException("User not found");
         }
         repository.delete(entity);
+        return converter.toDto(entity);
+    }
+
+    public UserCRUDResponse getUserByUsername(UserDetails user) {
+        if(user == null) {
+            throw new UsernameNotFoundException("user not exists");
+        }
+
+        UsersEntity entity = repository.findByUsername(user.getUsername()).orElse(null);
+
+        if(entity == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return converter.toDto(entity);
+    }
+
+    public UserCRUDResponse userLogout(UserDetails user, HttpServletResponse response) {
+        if(user == null) {
+            throw new UsernameNotFoundException("user not exists");
+        }
+        UsersEntity entity = repository.findByUsername(user.getUsername()).orElse(null);
+        if(entity == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        Map<String, ResponseCookie> cookies = jwtService.logout(entity);
+
+        for (ResponseCookie cookie : cookies.values()) {
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        }
+
+        SecurityContextHolder.clearContext();
+
         return converter.toDto(entity);
     }
 }

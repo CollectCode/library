@@ -16,34 +16,34 @@ INSERT INTO books (book_title, book_author, book_publish, book_publish_date, boo
 ('파이썬 프로그래밍       ', '한소희              ', '한빛미디어         ', '2021-12-15', 'python_book_img8.jpg', 24000);
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('john_doe', '123456', '010-1234-5678', 'Sales', '서울 지점 소속 영업 담당', 'USER');
+('sshj1215', '{bcrypt}$2a$10$Oi0Cmk7ZJggiqj14UcBiJeHKZNAOC7zorrNP5Kx5ISs1wTLBHucX.', '010-1234-5678', 'Sales', '서울 지점 소속 영업 담당', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('jane_smith', '123456', '010-2345-6789', 'Marketing', '브랜드 마케팅 담당', 'USER');
+('sshj1315', '{bcrypt}$2a$10$Oi0Cmk7ZJggiqj14UcBiJeHKZNAOC7zorrNP5Kx5ISs1wTLBHucX.', '010-2345-6789', 'Marketing', '브랜드 마케팅 담당', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('alice_kim', '123456', '010-3456-7890', 'Design', 'UI/UX 디자이너', 'USER');
+('sshj1415', '123456', '010-3456-7890', 'Design', 'UI/UX 디자이너', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('bob_lee', '123456', '010-4567-8901', 'IT', '백엔드 개발자', 'USER');
+('sshj1515', '123456', '010-4567-8901', 'IT', '백엔드 개발자', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('charlie_park', '123456', '010-5678-9012', 'HR', '인사 관리 담당', 'USER');
+('sshj1615', '123456', '010-5678-9012', 'HR', '인사 관리 담당', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('david_choi', '123456', '010-6789-0123', 'Finance', '재무팀 팀장', 'USER');
+('sshj1715', '123456', '010-6789-0123', 'Finance', '재무팀 팀장', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('emma_yoon', '123456', '010-7890-1234', 'R&D', '신제품 개발자', 'USER');
+('sshj1815', '123456', '010-7890-1234', 'R&D', '신제품 개발자', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('frank_han', '123456', '010-8901-2345', 'CS', '고객 서비스 담당', 'USER');
+('sshj1915', '123456', '010-8901-2345', 'CS', '고객 서비스 담당', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('grace_kang', '123456', '010-9012-3456', 'Legal', '법률 자문 담당', 'USER');
+('sshj2015', '123456', '010-9012-3456', 'Legal', '법률 자문 담당', 'USER');
 
 INSERT INTO users (user_name, user_pw, user_phone, user_dept, user_info, user_role) VALUES
-('admin_user', '123456', '010-1111-2222', 'Admin', '시스템 관리자', 'ADMIN');
+('sshj2115', '{bcrypt}$2a$10$Oi0Cmk7ZJggiqj14UcBiJeHKZNAOC7zorrNP5Kx5ISs1wTLBHucX.', '010-1111-2222', 'Admin', '시스템 관리자', 'ADMIN');
 
 INSERT INTO loan (user_id, book_id, loan_date, return_expire_date, returned_date, whether_return) VALUES
 (1, 1, '2025-04-10', '2025-04-24', '2025-04-22', 'RETURNED'),

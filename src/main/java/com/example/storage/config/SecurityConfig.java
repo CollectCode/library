@@ -17,6 +17,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,42 +31,40 @@ public class SecurityConfig {
     private final JwtService jwtService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // /api요청 필터(먼저 필터됨)
     @Bean
-    @Order(1)
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain apiFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+        // 커스텀 로그인 필터 생성 및 경로 변경
+        CustomUsernamePasswordAuthenticationFilter customFilter =
+                new CustomUsernamePasswordAuthenticationFilter(authenticationManager, usersRepository, objectMapper, jwtService);
+        customFilter.setFilterProcessesUrl("/api/login"); // 여기를 /api/login으로 변경
+
         http
-                .securityMatcher("/api/**")
+                .securityMatcher("/api/**") // /api/** 경로만 처리
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration corsConfig = new CorsConfiguration();
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:5173"));
+                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    corsConfig.setAllowedHeaders(List.of("*"));
+                    corsConfig.setAllowCredentials(true);
+                    return corsConfig;
+                }))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/add", "/api/book/title/**", "/api/book/author/**", "/api/book/publish/**").permitAll()
+                        .requestMatchers(
+                                "/api/user/add",
+                                "/api/book/title/**",
+                                "/api/book/author/**",
+                                "/api/book/publish/**",
+                                "/api/login"  // 로그인 요청도 여기서 허용
+                        ).permitAll()
                         .requestMatchers("/api/book/**", "/api/user/**", "/api/loan/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement((sessionManagement) -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 커스텀 로그인 필터 위치 지정 (UsernamePasswordAuthenticationFilter 자리에 삽입)
+                .addFilterAt(customFilter, UsernamePasswordAuthenticationFilter.class)
+                // JWT 인증 필터는 커스텀 로그인 필터 뒤에 위치
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**", "/login", "/api/**").permitAll()
-                        .anyRequest().permitAll()
-                )
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**", "/api/user/**")
-                )
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.sameOrigin())
-                )
-                // 여기서 커스텀 로그인 필터 추가
-                .addFilterAt(customUsernamePasswordAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))),
-                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -76,10 +77,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-    }
-
-    @Bean
-    public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
-        return new CustomUsernamePasswordAuthenticationFilter(authenticationManager, usersRepository, objectMapper, jwtService);
     }
 }

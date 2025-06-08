@@ -11,6 +11,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class JwtService {
     // Jwt 설정에 관한 정보
@@ -68,7 +70,7 @@ public class JwtService {
         if(type == null || !type.equals(REFRESH_TOKEN)) { type = ACCESS_TOKEN; }
 
         Date now = new Date();
-        Duration duration = Duration.ofMinutes(type.equals(ACCESS_TOKEN)? jwtProperties.getDuration(): jwtProperties.getRefreshDuration());
+        Duration duration = Duration.ofHours(type.equals(ACCESS_TOKEN)? jwtProperties.getDuration(): jwtProperties.getRefreshDuration());
         Date expiration = new Date(now.getTime() + duration.toMillis());
 
         return Jwts.builder()
@@ -81,8 +83,11 @@ public class JwtService {
 
     // 토큰 정보를 기반으로 Context에 저장할 유저 정보 생성
     public Authentication verifyToken(String token) throws JwtException, UsernameNotFoundException {
-        String username = jwtParser.parseClaimsJwt(token).getBody().getSubject();
+        String username = jwtParser.parseClaimsJws(token).getBody().getSubject();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if(userDetails == null) {
+            throw new UsernameNotFoundException(username);
+        }
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
     
@@ -114,7 +119,7 @@ public class JwtService {
     // RefreshToken으로 AccessToken 발급
     @Transactional
     public String getAccessTokenByRefreshToken(String token) throws JwtException,UsernameNotFoundException  {
-        String username = jwtParser.parseClaimsJwt(token).getBody().getSubject();
+        String username = jwtParser.parseClaimsJws(token).getBody().getSubject();
         UsersEntity users = usersRepository.findByUsername(username).orElse(null);
         RefreshTokenEntity rtToken = refreshTokenRepository.findByUser_username(users.getUsername()).orElse(null);
 
@@ -149,6 +154,34 @@ public class JwtService {
                 .sameSite("None")
                 .path("/")
                 .maxAge(Duration.ofDays(10))
+                .build();
+
+        responseCookies.put("access_token", accessCookie);
+        responseCookies.put("refresh_token", refreshCookie);
+
+        return responseCookies;
+    }
+
+    @Transactional
+    public Map<String, ResponseCookie> logout(UsersEntity user)  {
+        Map<String, String> tokens = getTokenByUsername(user);
+        Map<String, ResponseCookie> responseCookies = new HashMap<>();
+
+        // 쿠키에 각 토큰을 저장
+        ResponseCookie accessCookie = ResponseCookie.from("access_token", null)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+                .maxAge(Duration.ofSeconds(0))
+                .build();
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", null)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+                .maxAge(Duration.ofSeconds(0))
                 .build();
 
         responseCookies.put("access_token", accessCookie);

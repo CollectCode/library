@@ -6,6 +6,8 @@ import com.example.storage.dto.UserCRUDResponse;
 import com.example.storage.dto.UserDto;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,13 +18,14 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
 
     @Override
     public UsersEntity toEntity(UserCRUDRequest request) {
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         UserDto dto = request.getUser();
         return UsersEntity.builder()
                 .phone(dto.getPhone())
                 .dept(dto.getDept())
                 .username(dto.getUsername())
                 .info(dto.getInfo())
-                .password(dto.getPassword())
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .role(dto.getRole())
                 .build();
     }

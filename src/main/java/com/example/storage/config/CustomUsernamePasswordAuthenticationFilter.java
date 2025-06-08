@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final UsersRepository usersRepository;
@@ -44,6 +46,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
+        log.info("Called CustomUsernamePasswordAuthenticationFilter");
         // POST 메서드 확인
         if (!request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
@@ -63,7 +66,11 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
             String username = jsonNode.get("username").asText();
             String password = jsonNode.get("password").asText();
 
-            return new UsernamePasswordAuthenticationToken(username, password);
+            // ✅ 인증 토큰을 만들고 AuthenticationManager에게 인증 요청
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+    
+            // 실제 인증 처리
+            return this.getAuthenticationManager().authenticate(authRequest);
         } catch (IOException e) {
             throw new AuthenticationServiceException("Failed to parse JSON request body", e);
         }
