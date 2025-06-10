@@ -53,29 +53,17 @@ public class UsersService extends AbsService<
 
     @Override
     public UserCRUDResponse update(UserCRUDRequest request) {
+        log.info("Request Data in Service : {}", request);
         if(request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
-        UsersEntity entity = repository.findByUsername(request.getUser().getUsername()).orElse(null);
+        UsersEntity entity = repository.findById(request.getId()).orElse(null);
         if(entity == null) {
             throw new IllegalArgumentException("User not found");
         }
         entity.update(request);
         UsersEntity updatedEntity = repository.save(entity);
         return converter.toDto(updatedEntity);
-    }
-
-    @Override
-    public UserCRUDResponse delete(UserCRUDRequest request) {
-        if(request == null) {
-            throw new IllegalArgumentException("Request cannot be null");
-        }
-        UsersEntity entity = repository.findByUsername(request.getUser().getUsername()).orElse(null);
-        if(entity == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-        repository.delete(entity);
-        return converter.toDto(entity);
     }
 
     public UserCRUDResponse getUserByUsername(UserDetails user) {

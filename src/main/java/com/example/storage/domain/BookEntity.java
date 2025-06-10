@@ -43,13 +43,12 @@ public class BookEntity {
 	private BigInteger price;
 
 	public BookEntity update(BookCRUDRequest request) {
-		BookDto dto = request.getBook();
-		this.title = dto.getTitle();
-		this.author = dto.getAuthor();
-		this.publish = dto.getPublish();
-		this.publishDate = dto.getPublishDate();
-		this.bookImg = dto.getBookImg();
-		this.price = dto.getPrice();
+		this.title = request.getTitle();
+		this.author = request.getAuthor();
+		this.publish = request.getPublish();
+		this.publishDate = request.getPublishDate();
+		this.bookImg = request.getBookImg();
+		this.price = request.getPrice();
 		return this;
 	}
 }

@@ -20,7 +20,7 @@ public abstract class AbsController<
         CVT extends ConverterImpl<ENTITY, REQ, RES>,
         REP extends JpaRepository<ENTITY, ID>,
         SERVICE extends AbsService<REP, REQ, RES, ENTITY, ID, CVT>>
-        implements ControllerImpl<RES, REQ> {
+        implements ControllerImpl<RES, REQ, ID> {
 
     protected final SERVICE service;
 
@@ -38,15 +38,19 @@ public abstract class AbsController<
 
     @Override
     @PutMapping("/update")
-    public ResponseEntity<RES> update(@RequestBody REQ request)  {
+    public ResponseEntity<RES> update(
+            @RequestBody REQ request
+    )  {
         RES response = service.update(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    @DeleteMapping("/remove")
-    public ResponseEntity<RES> delete(@RequestBody REQ request) {
-        RES response = service.delete(request);
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<RES> delete(
+            @PathVariable ID id
+    ) {
+        RES response = service.delete(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

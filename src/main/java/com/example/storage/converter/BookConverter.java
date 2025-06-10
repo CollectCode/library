@@ -14,20 +14,19 @@ public class BookConverter implements ConverterImpl<BookEntity, BookCRUDRequest,
 
     @Override
     public BookEntity toEntity(BookCRUDRequest request) {
-        BookDto dto = request.getBook();
         return BookEntity.builder()
-                .bookImg(dto.getBookImg())
-                .price(dto.getPrice())
-                .author(dto.getAuthor())
-                .publish(dto.getPublish())
-                .publishDate(dto.getPublishDate())
-                .title(dto.getTitle())
+                .bookImg(request.getBookImg())
+                .price(request.getPrice())
+                .author(request.getAuthor())
+                .publish(request.getPublish())
+                .publishDate(request.getPublishDate())
+                .title(request.getTitle())
                 .build();
     }
 
     @Override
     public BookCRUDResponse toDto(BookEntity entity) {
-        BookDto dto = BookDto.builder()
+        return BookCRUDResponse.builder()
                 .id(entity.getBookId())
                 .bookImg(entity.getBookImg())
                 .author(entity.getAuthor())
@@ -35,9 +34,6 @@ public class BookConverter implements ConverterImpl<BookEntity, BookCRUDRequest,
                 .price(entity.getPrice())
                 .publish(entity.getPublish())
                 .publishDate(entity.getPublishDate())
-                .build();
-        return BookCRUDResponse.builder()
-                .book(dto)
                 .build();
     }
 

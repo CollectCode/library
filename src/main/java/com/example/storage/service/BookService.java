@@ -30,7 +30,7 @@ public class BookService extends AbsService<
         if(request == null) {
             throw new IllegalArgumentException("request cannot be null");
         }
-        BookEntity book = repository.findById(request.getBook().getId()).orElse(null);
+        BookEntity book = repository.findById(request.getId()).orElse(null);
         if(book == null) {
             throw new IllegalArgumentException("book cannot be null");
         }

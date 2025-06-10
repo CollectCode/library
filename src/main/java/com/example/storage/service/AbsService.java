@@ -14,7 +14,7 @@ public abstract class AbsService<
         ENTITY,
         ID extends Serializable,
         CVT extends ConverterImpl<ENTITY, REQ, RES>>
-        implements ServiceImpl<REQ, RES>  {
+        implements ServiceImpl<REQ, RES, ID>  {
 
     protected final REP repository;
     protected final CVT converter;
@@ -45,13 +45,18 @@ public abstract class AbsService<
     }
 
     @Override
-    public RES delete(REQ request) {
+    public RES delete(ID request) {
         if(request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
-        ENTITY entity = converter.toEntity(request);
-        repository.delete(entity);
-        return converter.toDto(entity);
+        ENTITY deleted = repository.findById(request).orElse(null);
+
+        if(deleted == null) {
+            throw new IllegalArgumentException("Entity not found");
+        }
+
+        repository.deleteById(request);
+        return converter.toDto(deleted);
     }
 
     @Override

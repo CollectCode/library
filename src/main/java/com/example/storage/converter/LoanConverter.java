@@ -14,22 +14,21 @@ public class LoanConverter implements ConverterImpl<LoanEntity, LoanCRUDRequest,
 
     @Override
     public LoanEntity toEntity(LoanCRUDRequest request) {
-        LoanDto dto = request.getLoan();
         return LoanEntity.builder()
-                .loanDate(dto.getLoanDate())
-                .bookId(dto.getBookId())
-                .returnedDate(dto.getReturnDate())
-                .returnExpireDate(dto.getLoanDate().plusDays(15))
-                .userId(dto.getUserId())
+                .loanDate(request.getLoanDate())
+                .bookId(request.getBookId())
+                .returnedDate(request.getReturnDate())
+                .returnExpireDate(request.getLoanDate().plusDays(15))
+                .userId(request.getUserId())
                 .whetherReturn(Return.LOANING)
                 .build();
     }
 
     @Override
     public LoanCRUDResponse toDto (LoanEntity entity) {
-        LoanDto dto;
+        LoanCRUDResponse dto;
         if(entity.getReturnedDate() == null) {
-            dto = LoanDto.builder()
+            return LoanCRUDResponse.builder()
                     .loanDate(entity.getLoanDate())
                     .loanId(entity.getLoanId())
                     .userId(entity.getUserId())
@@ -38,7 +37,7 @@ public class LoanConverter implements ConverterImpl<LoanEntity, LoanCRUDRequest,
                     .status(entity.getWhetherReturn())
                     .build();
         } else {
-            dto = LoanDto.builder()
+            return LoanCRUDResponse.builder()
                     .loanDate(entity.getLoanDate())
                     .loanId(entity.getLoanId())
                     .userId(entity.getUserId())
@@ -48,9 +47,6 @@ public class LoanConverter implements ConverterImpl<LoanEntity, LoanCRUDRequest,
                     .status(entity.getWhetherReturn())
                     .build();
         }
-        return LoanCRUDResponse.builder()
-                .loan(dto)
-                .build();
     }
 
     @Override

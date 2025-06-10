@@ -38,14 +38,55 @@ public class UsersEntity {
 	@Column(name = "user_role", columnDefinition = "CHAR(5)", nullable = false)
 	private Roles role;
 
+	public void updateUsername(String username) {
+		if(username == null)	{
+			return;
+		}
+		this.username = username;
+	}
+
+	public void updatePassword(String password) {
+		if(password == null)	{
+			return;
+		}
+		this.password = password;
+	}
+
+	public void updatePhone(String phone) {
+		if(phone == null)	{
+			return;
+		}
+		this.phone = phone;
+	}
+
+	public void updateDept(String dept) {
+		if(dept == null)	{
+			return;
+		}
+		this.dept = dept;
+	}
+
+	public void updateInfo(String info) {
+		if(info == null)	{
+			return;
+		}
+		this.info = info;
+	}
+
+	public void updateRole(Roles role) {
+		if(role == null)	{
+			return;
+		}
+		this.role = role;
+	}
+
 	public UsersEntity update(UserCRUDRequest request) {
-		UserDto dto = request.getUser();
-		this.username = dto.getUsername();
-		this.password = dto.getPassword();
-		this.phone = dto.getPhone();
-		this.dept = dto.getDept();
-		this.info = dto.getInfo();
-		this.role = dto.getRole();
+		updateUsername(request.getUsername());
+		updatePassword(request.getPassword());
+		updatePhone(request.getPhone());
+		updateDept(request.getDept());
+		updateInfo(request.getInfo());
+		updateRole(request.getRole());
 		return this;
 	}
 }

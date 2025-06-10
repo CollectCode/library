@@ -20,30 +20,25 @@ public class UserConverter implements ConverterImpl<UsersEntity, UserCRUDRequest
     @Override
     public UsersEntity toEntity(UserCRUDRequest request) {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        UserDto dto = request.getUser();
         return UsersEntity.builder()
-                .phone(dto.getPhone())
-                .dept(dto.getDept())
-                .username(dto.getUsername())
-                .info(dto.getInfo())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .role(dto.getRole())
+                .phone(request.getPhone())
+                .dept(request.getDept())
+                .username(request.getUsername())
+                .info(request.getInfo())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
                 .build();
     }
 
     @Override
     public UserCRUDResponse toDto(UsersEntity entity) {
-        log.info("Get user in converter : {}", entity);
-        UserDto dto = UserDto.builder()
+        return UserCRUDResponse.builder()
                 .id(entity.getUserId())
                 .info(entity.getInfo())
                 .role(entity.getRole())
                 .dept(entity.getDept())
                 .username(entity.getUsername())
                 .phone(entity.getPhone())
-                .build();
-        return UserCRUDResponse.builder()
-                .user(dto)
                 .build();
     }
 
