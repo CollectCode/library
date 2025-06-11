@@ -35,11 +35,16 @@ public abstract class AbsService<
     }
 
     @Override
-    public RES update(REQ request) {
+    public RES update(REQ request, ID id) {
         if(request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
-        ENTITY entity = converter.toEntity(request);
+        ENTITY entity = repository.findById(id).orElse(null);
+
+        if(entity == null) {
+            throw new IllegalArgumentException("Entity not found");
+        }
+
         ENTITY updated = repository.save(entity);
         return converter.toDto(updated);
     }

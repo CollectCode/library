@@ -26,7 +26,7 @@ public class BookService extends AbsService<
     }
 
     @Override
-    public BookCRUDResponse update(BookCRUDRequest request)    {
+    public BookCRUDResponse update(BookCRUDRequest request, Long id)    {
         if(request == null) {
             throw new IllegalArgumentException("request cannot be null");
         }

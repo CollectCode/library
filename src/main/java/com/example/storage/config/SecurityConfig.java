@@ -49,8 +49,11 @@ public class SecurityConfig {
                     return corsConfig;
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/uploads/**",
+                                "/api/files/**",
                                 "/api/user/add",
                                 "/api/book/title/**",
                                 "/api/book/author/**",

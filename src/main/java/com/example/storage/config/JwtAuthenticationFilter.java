@@ -32,12 +32,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("Called JWT Authentication Filter");
         String requestUri = request.getRequestURI();
 
-        // api <-- 데이터를 주고 받는 api요청이 아닌경우
+        // 로그인 요청일 경우
         if(requestUri.startsWith("/api/login"))  {
             log.info("Request URI: {}", requestUri);
             filterChain.doFilter(request, response);
             return;
         }
+
+        // 파일 업로드 요청일 경우
+        if(requestUri.startsWith("/api/files"))  {
+            log.info("Request URI: {}", requestUri);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if(requestUri.startsWith("/uploads"))  {
+            log.info("Request URI: {}", requestUri);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
 
         String token = getToken(request);
 

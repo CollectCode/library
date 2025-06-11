@@ -52,12 +52,12 @@ public class UsersService extends AbsService<
     }
 
     @Override
-    public UserCRUDResponse update(UserCRUDRequest request) {
+    public UserCRUDResponse update(UserCRUDRequest request, Long id) {
         log.info("Request Data in Service : {}", request);
         if(request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
-        UsersEntity entity = repository.findById(request.getId()).orElse(null);
+        UsersEntity entity = repository.findById(id).orElse(null);
         if(entity == null) {
             throw new IllegalArgumentException("User not found");
         }

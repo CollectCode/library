@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.List;
 
 @Slf4j
@@ -37,11 +38,12 @@ public abstract class AbsController<
     }
 
     @Override
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     public ResponseEntity<RES> update(
-            @RequestBody REQ request
+            @RequestBody REQ request,
+            @PathVariable ID id
     )  {
-        RES response = service.update(request);
+        RES response = service.update(request, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
