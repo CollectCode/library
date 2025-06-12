@@ -1,5 +1,6 @@
 package com.example.storage.dto;
 
+import com.example.storage.enums.Loan;
 import lombok.*;
 
 import java.math.BigInteger;
@@ -15,5 +16,6 @@ public class BookCRUDRequest {
     private String publish;
     private String bookImg;
     private LocalDate publishDate;
+    private Loan status;
     private BigInteger price;
 }

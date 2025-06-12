@@ -2,6 +2,7 @@ package com.example.storage.domain;
 
 import com.example.storage.dto.BookCRUDRequest;
 import com.example.storage.dto.BookDto;
+import com.example.storage.enums.Loan;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,10 @@ public class BookEntity {
 	@Column(name = "book_price", columnDefinition = "int")
 	private BigInteger price;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "book_status")
+	private Loan status;
+
 	public BookEntity update(BookCRUDRequest request) {
 		this.title = request.getTitle();
 		this.author = request.getAuthor();
@@ -49,6 +54,11 @@ public class BookEntity {
 		this.publishDate = request.getPublishDate();
 		this.bookImg = request.getBookImg();
 		this.price = request.getPrice();
+		this.status = request.getStatus();
 		return this;
+	}
+
+	public void updateStatus(Loan status) {
+		this.status = status;
 	}
 }

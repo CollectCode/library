@@ -4,6 +4,7 @@ import com.example.storage.domain.BookEntity;
 import com.example.storage.dto.BookCRUDRequest;
 import com.example.storage.dto.BookCRUDResponse;
 import com.example.storage.dto.BookDto;
+import com.example.storage.enums.Loan;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class BookConverter implements ConverterImpl<BookEntity, BookCRUDRequest,
                 .publish(request.getPublish())
                 .publishDate(request.getPublishDate())
                 .title(request.getTitle())
+                .status(Loan.LOAN_ABLE)
                 .build();
     }
 
@@ -34,6 +36,7 @@ public class BookConverter implements ConverterImpl<BookEntity, BookCRUDRequest,
                 .price(entity.getPrice())
                 .publish(entity.getPublish())
                 .publishDate(entity.getPublishDate())
+                .status(entity.getStatus())
                 .build();
     }
 

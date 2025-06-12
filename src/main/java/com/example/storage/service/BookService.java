@@ -52,18 +52,21 @@ public class BookService extends AbsService<
         return converter.toDto(book);
     }
 
-    public List<BookCRUDResponse> getListByTitle(String title) {
-        List<BookEntity> books = repository.findAllByTitle(title);
+    public Page<BookCRUDResponse> getListByTitle(String title) {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<BookEntity> books = repository.findAllByTitle(title, pageable);
         return converter.toDtoList(books);
     }
 
-    public List<BookCRUDResponse> getListByAuthor(String author) {
-        List<BookEntity> books = repository.findAllByAuthor(author);
+    public Page<BookCRUDResponse> getListByAuthor(String author) {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<BookEntity> books = repository.findAllByAuthor(author, pageable);
         return converter.toDtoList(books);
     }
 
-    public List<BookCRUDResponse> getListByPublish(String publish) {
-        List<BookEntity> books = repository.findAllByPublish(publish);
+    public Page<BookCRUDResponse> getListByPublish(String publish) {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<BookEntity> books = repository.findAllByPublish(publish, pageable);
         return converter.toDtoList(books);
     }
 }

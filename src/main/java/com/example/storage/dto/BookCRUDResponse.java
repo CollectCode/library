@@ -1,5 +1,6 @@
 package com.example.storage.dto;
 
+import com.example.storage.enums.Loan;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class BookCRUDResponse {
     private String publish;
     private String bookImg;
     private LocalDate publishDate;
+    private Loan status;
     private BigInteger price;
 }

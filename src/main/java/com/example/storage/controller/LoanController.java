@@ -29,6 +29,12 @@ public class LoanController extends AbsController<
         super(service);
     }
 
+    @GetMapping
+    public ResponseEntity<List<LoanCRUDResponse>> findAll() {
+        List<LoanCRUDResponse> responses = service.searchAllLoans();
+        return new ResponseEntity<>(responses, HttpStatus.OK);
+    }
+
     //TODO 책 ID를 통한 대출 현황 및 이력을 조회
     @GetMapping("/book/{bookId}")
     public ResponseEntity<List<LoanCRUDResponse>> readLoansByBookId(

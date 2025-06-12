@@ -82,6 +82,22 @@ public class UsersService extends AbsService<
         return converter.toDto(entity);
     }
 
+    public UserCRUDResponse getUserById(Long userId) {
+        if(userId == null) {
+            throw new UsernameNotFoundException("user not exists");
+        }
+
+        UsersEntity entity = repository.findById(userId).orElse(null);
+
+        log.info("get UserEntity : {}", entity);
+
+        if(entity == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return converter.toDto(entity);
+    }
+
     public UserCRUDResponse userLogout(UserDetails user, HttpServletResponse response) {
         if(user == null) {
             throw new UsernameNotFoundException("user not exists");

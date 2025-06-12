@@ -41,6 +41,14 @@ public class UserController extends AbsController<
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
+    @GetMapping("/get/{userId}")
+    public ResponseEntity<UserCRUDResponse> getUserById(
+            @PathVariable Long userId
+    )   {
+        UserCRUDResponse response = service.getUserById(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/auth/me")
     public ResponseEntity<UserCRUDResponse> getUser(
             @AuthenticationPrincipal UserDetails userDetails

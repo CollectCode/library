@@ -1,6 +1,8 @@
 package com.example.storage.converter;
 
+import com.example.storage.domain.BookEntity;
 import com.example.storage.domain.LoanEntity;
+import com.example.storage.domain.UsersEntity;
 import com.example.storage.dto.LoanCRUDRequest;
 import com.example.storage.dto.LoanCRUDResponse;
 import com.example.storage.dto.LoanDto;
@@ -54,5 +56,32 @@ public class LoanConverter implements ConverterImpl<LoanEntity, LoanCRUDRequest,
         return entities.stream()
                 .map(this::toDto)
                 .toList();
+    }
+
+    public LoanCRUDResponse toDtoByBook (LoanEntity entity, BookEntity book) {
+        return LoanCRUDResponse.builder()
+                .loanDate(entity.getLoanDate())
+                .loanId(entity.getLoanId())
+                .userId(entity.getUserId())
+                .bookId(entity.getBookId())
+                .returnDate(entity.getReturnedDate())
+                .returnExpireDate(entity.getReturnExpireDate())
+                .status(entity.getWhetherReturn())
+                .bookTitle(book.getTitle())
+                .build();
+    }
+
+    public LoanCRUDResponse toDtoAll(LoanEntity entity, BookEntity book, UsersEntity user)  {
+        return LoanCRUDResponse.builder()
+                .loanDate(entity.getLoanDate())
+                .loanId(entity.getLoanId())
+                .userId(entity.getUserId())
+                .bookId(entity.getBookId())
+                .returnDate(entity.getReturnedDate())
+                .returnExpireDate(entity.getReturnExpireDate())
+                .status(entity.getWhetherReturn())
+                .bookTitle(book.getTitle())
+                .username(user.getUsername())
+                .build();
     }
 }

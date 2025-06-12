@@ -47,28 +47,28 @@ public class BookController extends AbsController<
 
     // 책 제목으로 조회
     @GetMapping("/title/{bookTitle}")
-    public ResponseEntity<List<BookCRUDResponse>> getListByTitle(
+    public ResponseEntity<Page<BookCRUDResponse>> getListByTitle(
             @PathVariable String bookTitle
     )    {
-        List<BookCRUDResponse> responses = service.getListByTitle(bookTitle);
+        Page<BookCRUDResponse> responses = service.getListByTitle(bookTitle);
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
     // 책 저자로 조회
     @GetMapping("/author/{author}")
-    public ResponseEntity<List<BookCRUDResponse>> getListByAuthor(
+    public ResponseEntity<Page<BookCRUDResponse>> getListByAuthor(
             @PathVariable String author
     )    {
-        List<BookCRUDResponse> responses = service.getListByAuthor(author);
+        Page<BookCRUDResponse> responses = service.getListByAuthor(author);
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
     // 책 출판사로 조회
-    @GetMapping("/publish/{publish}")
-    public ResponseEntity<List<BookCRUDResponse>> getListByPublish(
+    @GetMapping("/publisher/{publish}")
+    public ResponseEntity<Page<BookCRUDResponse>> getListByPublish(
             @PathVariable String publish
     )    {
-        List<BookCRUDResponse> responses = service.getListByPublish(publish);
+        Page<BookCRUDResponse> responses = service.getListByPublish(publish);
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 }

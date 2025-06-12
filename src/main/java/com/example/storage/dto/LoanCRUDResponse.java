@@ -16,6 +16,8 @@ public class LoanCRUDResponse {
     private Long loanId;
     private Long userId;
     private Long bookId;
+    private String username;
+    private String bookTitle;
     private LocalDate loanDate;
     private LocalDate returnDate;
     private LocalDate returnExpireDate;
